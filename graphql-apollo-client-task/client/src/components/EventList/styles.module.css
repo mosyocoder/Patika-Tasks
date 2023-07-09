@@ -1,0 +1,21 @@
+.scrollableDiv{
+    width: 90%;
+    overflow: auto;
+    border: 1px solid rgba(140, 140, 140, 0.35);
+    border-radius: 5px;
+    height: 400px;
+    padding: 0 16px;
+    margin-top: 25px;
+}
+
+.date{
+    color: rgba(0, 0, 0, .60);
+}
+
+.listItemTitle:hover{
+    color: rgba(0, 0, 0, 0.88)!important;
+}
+
+.listItemDesc{
+    color: rgba(0, 0, 0, 0.68)!important;
+}
