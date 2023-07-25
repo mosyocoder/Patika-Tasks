@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./styles.module.css";
 import Loading from "../Loading";
 import Form from "../FormComponent";
 
 import { useQuery } from "@apollo/client";
-import { GET_EVENTS } from "../../queries";
+import { EVENT_SUBSCRIPTION, GET_EVENTS } from "../../queries";
 import { List, Divider } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
+import EventCounter from "../EventCounter";
 
 function EventList() {
-	const { loading, error, data } = useQuery(GET_EVENTS);
+	const { loading, error, data, subscribeToMore } = useQuery(GET_EVENTS);
+
+	useEffect(() => {
+		subscribeToMore({
+			document: EVENT_SUBSCRIPTION,
+			updateQuery: (prev, { subscriptionData }) => {
+				if (!subscriptionData.data) return prev;
+				return {
+					events: [...prev.events, subscriptionData.data.eventCreated],
+				};
+			},
+		});
+	}, [subscribeToMore]);
 
 	if (loading) {
 		return <Loading />;
@@ -23,6 +36,10 @@ function EventList() {
 	return (
 		<>
 			<Form />
+			<div className="counter">
+				<EventCounter />
+			</div>
+
 			<div className={styles.scrollableDiv} id="scrollableDiv">
 				<List>
 					<InfiniteScroll dataLength={data.events.length} scrollableTarget="scrollableDiv" endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}>

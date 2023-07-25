@@ -10,3 +10,11 @@ body {
 .ant-list-item{
     align-items: flex-start!important;
 }
+
+.counter{
+    width: 93%;
+    margin-top: 10px;
+    margin-bottom: -25px;
+    display: flex;
+    justify-content: flex-end;
+}

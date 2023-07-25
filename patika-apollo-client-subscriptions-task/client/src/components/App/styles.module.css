@@ -6,3 +6,7 @@
     flex-direction: column;
     justify-content: center;
 }
+
+.container > div.styles_container__OSp3Q{
+    align-items: flex-end;
+}

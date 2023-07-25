@@ -721,6 +721,11 @@ const participants = [
 		event_id: 14,
 	},
 	{
+		id: 34,
+		user_id: 15,
+		event_id: 12,
+	},
+	{
 		id: 35,
 		user_id: 6,
 		event_id: 17,
@@ -802,9 +807,4 @@ const participants = [
 	},
 ];
 
-module.exports = {
-	events,
-	locations,
-	users,
-	participants,
-};
+module.exports = { events, locations, users, participants };

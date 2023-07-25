@@ -22,8 +22,37 @@ export const GET_EVENT = gql`
 			date
 			from
 			to
-			location_id
-			user_id
+			user {
+				id
+				username
+				email
+			}
+			participants {
+				user {
+					username
+					email
+				}
+			}
+			location {
+				id
+				name
+				desc
+				lat
+				lng
+			}
+		}
+	}
+`;
+
+export const EVENT_SUBSCRIPTION = gql`
+	subscription eventCreated {
+		eventCreated {
+			id
+			title
+			desc
+			date
+			from
+			to
 			user {
 				id
 				username
@@ -60,6 +89,32 @@ export const GET_USERS = gql`
 		users {
 			id
 			username
+		}
+	}
+`;
+
+export const CREATE_EVENT = gql`
+	mutation createEvent($data: CreateEventInput!) {
+		createEvent(data: $data) {
+			id
+		}
+	}
+`;
+
+export const EVENT_COUNT_SUBSCCRIPTION = gql`
+	subscription {
+		eventCount
+	}
+`;
+
+export const PARTICIPANTS_SUBSCRIPTION = gql`
+	subscription participantCreated($id: ID) {
+		participantCreated(event_id: $id) {
+			id
+			user {
+				id
+				username
+			}
 		}
 	}
 `;
