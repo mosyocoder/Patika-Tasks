@@ -213,7 +213,7 @@ const yoga = createYoga({
 					subscribe: withFilter(
 						() => pubSub.asyncIterator("participantCreated"),
 
-						(payload, variables) => payload.participantCreated.event_id === variables.event_id,
+						(payload, variables) => (variables.event_id ? payload.participantCreated.event_id === variables.event_id : true),
 					),
 				},
 				participantUpdated: {

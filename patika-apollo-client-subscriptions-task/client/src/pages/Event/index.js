@@ -1,10 +1,11 @@
-import { useQuery, useSubscription } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { GET_EVENT, PARTICIPANTS_SUBSCRIPTION } from "../../queries";
-import styles from "./styles.module.css";
-import Loading from "../Loading";
 import { Divider } from "antd";
+
+import styles from "./styles.module.css";
+import Loading from "../../components/Loading";
+import { GET_EVENT, PARTICIPANTS_SUBSCRIPTION } from "./queries";
 
 function Event() {
 	const { id } = useParams();
@@ -15,25 +16,15 @@ function Event() {
 		},
 	});
 
-	const {
-		loading: subload,
-		error: suberror,
-		data: subdata,
-	} = useSubscription(PARTICIPANTS_SUBSCRIPTION, {
-		variables: {
-			event_id: id,
-		},
-	});
-
 	useEffect(() => {
 		if (!loading) {
 			subscribeToMore({
 				document: PARTICIPANTS_SUBSCRIPTION,
 				variables: { event_id: id },
 				updateQuery: (prev, { subscriptionData }) => {
-					console.log("fadw");
 					if (!subscriptionData.data) return prev;
 					console.log(subscriptionData.data.participantCreated);
+					console.log(prev.event.participants);
 					const newParticipant = subscriptionData.data.participantCreated;
 					return {
 						event: {
@@ -53,8 +44,6 @@ function Event() {
 	if (error) {
 		return <div>Error: {error.message}</div>;
 	}
-
-	console.log(data.event);
 
 	return (
 		<div className={styles.cont}>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import styles from "./style.module.css";
 import { Button, DatePicker, Form, Input, Row, Select, TimePicker } from "antd";
 import { useMutation, useQuery } from "@apollo/client";
-import { CREATE_EVENT, GET_LOCATIONS, GET_USERS } from "../../queries";
+
+import styles from "./style.module.css";
+import { CREATE_EVENT, GET_LOCATIONS, GET_USERS } from "./queries";
 
 function FormComponent() {
 	const [inputs, setInputs] = useState({

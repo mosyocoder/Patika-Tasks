@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import styles from "./styles.module.css";
-import Loading from "../Loading";
-import Form from "../FormComponent";
-
 import { useQuery } from "@apollo/client";
-import { EVENT_SUBSCRIPTION, GET_EVENTS } from "../../queries";
+import { EVENT_SUBSCRIPTION, GET_EVENTS } from "./queries";
 import { List, Divider } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
-import EventCounter from "../EventCounter";
+
+import styles from "./styles.module.css";
+import Loading from "../../components/Loading";
+import Form from "../../components/FormComponent";
+import EventCounter from "../../components/EventCounter";
 
 function EventList() {
 	const { loading, error, data, subscribeToMore } = useQuery(GET_EVENTS);
