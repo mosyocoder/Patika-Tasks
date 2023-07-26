@@ -16,19 +16,19 @@ function FormComponent() {
 		user_id: "",
 	});
 
-	const [addEvent, { data, loading, error }] = useMutation(CREATE_EVENT);
+    const [addEvent, { data, loading, error }] = useMutation(CREATE_EVENT);
 
-	const handleClick = async () => {
+    const handleClick = async () => {
 		await addEvent({
 			variables: {
 				data: inputs,
 			},
 		});
-	};
+    };
 
-	const { loading: locationsLoading, error: locationsError, data: locationsData } = useQuery(GET_LOCATIONS);
-	const locationsArray = [];
-	if (!locationsLoading && !locationsError && locationsData) {
+    const { loading: locationsLoading, error: locationsError, data: locationsData } = useQuery(GET_LOCATIONS);
+    const locationsArray = [];
+    if (!locationsLoading && !locationsError && locationsData) {
 		locationsData.locations.forEach((item) => {
 			const data = {
 				value: item.id,
@@ -37,11 +37,11 @@ function FormComponent() {
 			};
 			locationsArray.push(data);
 		});
-	}
+    }
 
-	const { loading: userLoading, error: userError, data: userData } = useQuery(GET_USERS);
-	const usersArray = [];
-	if (!userLoading && !userError && userData) {
+    const { loading: userLoading, error: userError, data: userData } = useQuery(GET_USERS);
+    const usersArray = [];
+    if (!userLoading && !userError && userData) {
 		userData.users.forEach((item) => {
 			const data = {
 				value: item.id,
@@ -50,30 +50,30 @@ function FormComponent() {
 			};
 			usersArray.push(data);
 		});
-	}
+    }
 
-	const handleChange = (e) => {
+    const handleChange = (e) => {
 		setInputs((prev) => ({
 			...prev,
 			[e.target.name]: e.target.value,
 		}));
-	};
+    };
 
-	const handleSelect = (value) => {
+    const handleSelect = (value) => {
 		setInputs((prev) => ({
 			...prev,
 			[value.title]: value.value,
 		}));
-	};
+    };
 
-	const handleDate = (e, title) => {
+    const handleDate = (e, title) => {
 		setInputs((prev) => ({
 			...prev,
 			date: title,
 		}));
-	};
+    };
 
-	const handleHour = (e, title, name) => {
+    const handleHour = (e, title, name) => {
 		name === "from"
 			? setInputs((prev) => ({
 					...prev,
@@ -83,11 +83,11 @@ function FormComponent() {
 					...prev,
 					to: title,
 			  }));
-	};
+    };
 
-	return (
+    return (
 		<Row>
-			<Form className={styles.form} labelCol={{ span: 4 }} wrapperCol={{ span: 24 }}>
+			<Form className={styles.form} labelCol={{ span: 4 }} wrapperCol={{ span: 24 }} requiredMark>
 				<Form.Item label="Title">
 					<Input name="title" disabled={loading} onChange={handleChange} />
 				</Form.Item>
@@ -115,7 +115,7 @@ function FormComponent() {
 				</Form.Item>
 			</Form>
 		</Row>
-	);
+    );
 }
 
 export default FormComponent;

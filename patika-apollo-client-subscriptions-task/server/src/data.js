@@ -807,4 +807,4 @@ const participants = [
 	},
 ];
 
-module.exports = { events, locations, users, participants };
+export default { events, locations, users, participants };
