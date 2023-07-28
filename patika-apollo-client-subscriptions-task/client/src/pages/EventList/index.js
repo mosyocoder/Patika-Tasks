@@ -17,6 +17,7 @@ function EventList() {
 		subscribeToMore({
 			document: EVENT_SUBSCRIPTION,
 			updateQuery: (prev, { subscriptionData }) => {
+                console.log(prev, subscriptionData);
 				if (!subscriptionData.data) return prev;
 				return {
 					events: [...prev.events, subscriptionData.data.eventCreated],
