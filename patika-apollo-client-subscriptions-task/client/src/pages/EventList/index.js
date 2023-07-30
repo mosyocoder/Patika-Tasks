@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 import styles from "./styles.module.css";
 import Loading from "../../components/Loading";
-import Form from "../../components/FormComponent";
 import EventCounter from "../../components/EventCounter";
 
 function EventList() {
@@ -17,7 +16,7 @@ function EventList() {
 		subscribeToMore({
 			document: EVENT_SUBSCRIPTION,
 			updateQuery: (prev, { subscriptionData }) => {
-                console.log(prev, subscriptionData);
+				console.log(prev, subscriptionData);
 				if (!subscriptionData.data) return prev;
 				return {
 					events: [...prev.events, subscriptionData.data.eventCreated],
@@ -36,7 +35,6 @@ function EventList() {
 
 	return (
 		<>
-			<Form />
 			<div className="counter">
 				<EventCounter />
 			</div>
