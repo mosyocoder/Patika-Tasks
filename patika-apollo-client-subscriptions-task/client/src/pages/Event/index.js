@@ -1,11 +1,13 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Divider } from "antd";
+import { Avatar, Card, Divider } from "antd";
 
 import styles from "./styles.module.css";
 import Loading from "../../components/Loading";
 import { GET_EVENT, PARTICIPANTS_SUBSCRIPTION } from "./queries";
+import Meta from "antd/es/card/Meta";
+import { MailOutlined, ManOutlined, PhoneOutlined, WomanOutlined } from "@ant-design/icons";
 
 function Event() {
 	const { id } = useParams();
@@ -23,8 +25,6 @@ function Event() {
 				variables: { event_id: id },
 				updateQuery: (prev, { subscriptionData }) => {
 					if (!subscriptionData.data) return prev;
-					console.log(subscriptionData.data.participantCreated);
-					console.log(prev.event.participants);
 					const newParticipant = subscriptionData.data.participantCreated;
 					return {
 						event: {
@@ -58,7 +58,7 @@ function Event() {
 			</div>
 			<Divider>Event Owner</Divider>
 			<div className={styles.user}>
-				<p>{data.event.user.username}</p>
+				<p>{data.event.user.fullname}</p>
 				<p>{data.event.user.email}</p>
 			</div>
 			<Divider>Location</Divider>
@@ -67,7 +67,23 @@ function Event() {
 				<p>{data.event.location.desc}</p>
 			</div>
 			{data.event.participants.length === 0 ? <Divider>No Participant</Divider> : <Divider>Participants</Divider>}
-			<ul>{data.event.participants && data.event.participants.map((participant, key) => <div key={key}>{participant.user.length > 0 && <li>{participant.user[0].username}</li>}</div>)}</ul>
+			{data.event.participants && (
+				<div className={styles.participants}>
+					{data.event.participants.map((item, key) => (
+						<div key={key} className={styles.participant}>
+							<img src={item.user.image} alt="" />
+							<h3>{item.user.fullname}</h3>
+							<div className={styles.ageGender}>
+								{item.user.gender === "male" ? <ManOutlined /> : <WomanOutlined />}
+								<Divider type="vertical"></Divider>
+								<h4>{item.user.age}</h4>
+							</div>
+							<p>{item.user.phone}</p>
+							<p>{item.user.email}</p>
+						</div>
+					))}
+				</div>
+			)}
 		</div>
 	);
 }

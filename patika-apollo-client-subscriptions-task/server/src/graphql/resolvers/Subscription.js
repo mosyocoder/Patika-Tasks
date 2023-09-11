@@ -11,10 +11,10 @@ export const Subscription = {
 		subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("eventDeleted"),
 	},
 	eventCount: {
-		subscribe: (_, __, { db, pubsub }) => {
-			setTimeout(() => {
-				pubsub.publish("eventCount", { eventCount: db.events.length });
-				// pubSub.publish("eventCount", { eventCount: db.events.length });
+		subscribe: async (_, __, { _db, pubsub }) => {
+			setTimeout(async () => {
+				const eventCount = await _db.Event.countDocuments();
+				pubsub.publish("eventCount", { eventCount });
 			}, 100);
 			return pubsub.asyncIterator("eventCount");
 		},
@@ -29,9 +29,10 @@ export const Subscription = {
 		subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("locationDeleted"),
 	},
 	locationCount: {
-		subscribe: (_, __, { db, pubsub }) => {
-			setTimeout(() => {
-				pubsub.publish("locationCount", { locationCount: db.locations.length });
+		subscribe: async (_, __, { _db, pubsub }) => {
+			setTimeout(async () => {
+				const locationCount = await _db.Location.countDocuments();
+				pubsub.publish("locationCount", { locationCount });
 			}, 100);
 			return pubsub.asyncIterator("locationCount");
 		},
@@ -46,9 +47,10 @@ export const Subscription = {
 		subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("userDeleted"),
 	},
 	userCount: {
-		subscribe: (_, __, { db, pubsub }) => {
-			setTimeout(() => {
-				pubsub.publish("userCount", { userCount: db.users.length });
+		subscribe: async (_, __, { _db, pubsub }) => {
+			setTimeout(async () => {
+				const userCount = await _db.User.countDocuments();
+				pubsub.publish("userCount", { userCount });
 			}, 100);
 			return pubsub.asyncIterator("userCount");
 		},
@@ -57,7 +59,7 @@ export const Subscription = {
 		subscribe: withFilter(
 			(_, __, { pubsub }) => pubsub.asyncIterator("participantCreated"),
 
-			(payload, variables) => (variables.event_id ? payload.participantCreated.event_id === variables.event_id : true),
+			(payload, variables) => (variables.event_id ? payload.participantCreated.event === variables.event_id : true),
 		),
 	},
 	participantUpdated: {
@@ -67,9 +69,10 @@ export const Subscription = {
 		subscribe: (_, __, { pubsub }) => pubsub.asyncIterator("participantDeleted"),
 	},
 	participantCount: {
-		subscribe: (_, __, { db, pubsub }) => {
-			setTimeout(() => {
-				pubsub.publish("participantCount", { participantCount: db.participants.length });
+		subscribe: (_, __, { _db, pubsub }) => {
+			setTimeout(async () => {
+				const participantCount = await _db.Participant.countDocuments();
+				pubsub.publish("participantCount", { participantCount });
 			}, 100);
 			return pubsub.asyncIterator("participantCount");
 		},

@@ -1,13 +1,37 @@
 export const Query = {
-	event: (_, args, { db }) => db.events.find((event) => event.id === Number(args.id)),
-	events: (_, __, { db }) => db.events,
+	event: async (_, args, { _db }) => {
+		const event = await _db.Event.findById(args.id);
+		return event;
+	},
+	events: async (_, __, { _db }) => {
+		const events = await _db.Event.find();
+		return events;
+	},
 
-	location: (_, args, { db }) => db.locations.find((location) => location.id === Number(args.id)),
-	locations: (_, __, { db }) => db.locations,
+	location: async (_, args, { _db }) => {
+		const location = await _db.Location.findById(args.id);
+		return location;
+	},
+	locations: async (_, __, { _db }) => {
+		const locations = await _db.Location.find();
+		return locations;
+	},
 
-	user: (_, args, { db }) => db.users.find((user) => user.id === Number(args.id)),
-	users: (_, __, { db }) => db.users,
+	user: async (_, args, { _db }) => {
+		const user = await _db.User.findById(args.id);
+		return user;
+	},
+	users: async (_, __, { _db }) => {
+		const users = await _db.User.find();
+		return users;
+	},
 
-	participant: (_, args, { db }) => db.participants.find((participant) => participant.id === Number(args.id)),
-	participants: (_, __, { db }) => db.participants,
+	participant: async (_, args, { _db }) => {
+		const participant = await _db.Participant.findById(args.id);
+		return participant;
+	},
+	participants: async (_, __, { _db }) => {
+		const participants = await _db.Participant.find();
+		return participants;
+	},
 };

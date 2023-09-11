@@ -12,6 +12,7 @@ import EventCounter from "../../components/EventCounter";
 function EventList() {
 	const { loading, error, data, subscribeToMore } = useQuery(GET_EVENTS);
 
+
 	useEffect(() => {
 		subscribeToMore({
 			document: EVENT_SUBSCRIPTION,
@@ -45,15 +46,15 @@ function EventList() {
 						<List
 							dataSource={data.events}
 							renderItem={(item) => (
-								<List.Item key={item.id}>
+								<List.Item key={item._id}>
 									<List.Item.Meta
 										title={
-											<Link className={styles.listItemTitle} to={`/event/${item.id}`}>
+											<Link className={styles.listItemTitle} to={`/event/${item._id}`}>
 												{item.title}
 											</Link>
 										}
 										description={
-											<Link className={styles.listItemDesc} to={`/event/${item.id}`}>
+											<Link className={styles.listItemDesc} to={`/event/${item._id}`}>
 												{item.desc}
 											</Link>
 										}

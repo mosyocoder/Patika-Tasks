@@ -1,224 +1,187 @@
-import { v4 } from "uuid";
+import mongoose from "mongoose";
 
 export const Mutation = {
-	createEvent: (_, { data }, { db, pubsub }) => {
-		const event = {
-			id: v4(),
-			title: data.title,
-			desc: data.desc,
-			date: data.date,
-			from: data.from,
-			to: data.to,
-			location_id: data.location_id,
-			user_id: data.user_id,
-		};
+	createEvent: async (_, { data }, { _db, pubsub }) => {
+		const newEvent = new _db.Event({ ...data });
+		const event = await newEvent.save();
 
-		db.events.push(event);
+		const eventCount = await _db.Event.countDocuments();
+
 		pubsub.publish("eventCreated", { eventCreated: event });
-		pubsub.publish("eventCount", { eventCount: db.events.length });
+		pubsub.publish("eventCount", { eventCount });
 
 		return event;
 	},
-	updateEvent: (_, { id, data }, { db, pubsub }) => {
-		const event_index = db.events.findIndex((event) => event.id === Number(id));
+	updateEvent: async (_, { id, data }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_event_exist = await _db.Event.findById(id);
 
-		if (event_index === -1) {
-			throw new Error("Event not found!");
+			if (!is_event_exist) throw new Error("Event not found...!");
+
+			const updatedEvent = await _db.Event.findByIdAndUpdate(id, data, { new: true });
+
+			pubsub.publish("eventUpdated", { eventUpdated: updatedEvent });
+
+			return updatedEvent;
 		}
-
-		const updated_event = (db.events[event_index] = {
-			...db.events[event_index],
-			...data,
-		});
-
-		pubsub.publish("eventUpdated", { eventUpdated: updated_event });
-
-		return updated_event;
 	},
-	deleteEvent: (_, { id }, { db, pubsub }) => {
-		const event = db.events.findIndex((event) => event.id === Number(id));
+	deleteEvent: async (_, { id }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_event_exist = await _db.Event.findById(id);
 
-		if (event === -1) {
-			throw new Error("Event not found!");
+			if (!is_event_exist) throw new Error("Event not found...!");
+
+			const deletedEvent = await _db.Event.findByIdAndDelete(id);
+			const eventCount = await _db.Event.countDocuments();
+
+			pubsub.publish("eventDeleted", { eventDeleted: deletedEvent });
+			pubsub.publish("eventCount", { eventCount });
+
+			return deletedEvent;
 		}
-		const deleted_event = db.events[event];
-		db.events.splice(event, 1);
-
-		pubsub.publish("eventDeleted", { eventDeleted: deleted_event });
-		pubsub.publish("eventCount", { eventCount: db.events.length });
-
-		return deleted_event;
 	},
-	deleteAllEvents: (_, __, { db, pubsub }) => {
-		const length = db.events.length;
-		db.events.splice(0, length);
+	deleteAllEvents: async (_, __, { _db, pubsub }) => {
+		const deletedEvents = await _db.Event.deleteMany();
+		const eventCount = await _db.Event.countDocuments();
 
-		pubsub.publish("eventCount", { eventCount: db.events.length });
+		pubsub.publish("eventCount", { eventCount });
 
 		return {
-			count: length,
+			count: deletedEvents.deletedCount,
 		};
 	},
-	createLocation: (_, { data }, { db, pubsub }) => {
-		const location = {
-			id: v4(),
-			name: data.name,
-			desc: data.desc,
-			lat: data.lat,
-			lng: data.lng,
-		};
+	createLocation: async (_, { data }, { _db, pubsub }) => {
+		const newLocation = new _db.Location({ ...data });
 
-		db.locations.push(location);
+		const location = await newLocation.save();
+
+		const locationCount = await _db.Location.countDocuments();
 
 		pubsub.publish("locationCreated", { locationCreated: location });
-		pubsub.publish("locationCount", { locationCount: db.locations.length });
+		pubsub.publish("locationCount", { locationCount });
 
 		return location;
 	},
-	updateLocation: (_, { id, data }, { db, pubsub }) => {
-		const location_index = db.locations.findIndex((location) => location.id === Number(id));
+	updateLocation: async (_, { id, data }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_location_exist = await _db.Location.findById(id);
 
-		if (location_index === -1) {
-			throw new Error("Location not found!");
+			if (!is_location_exist) throw new Error("Location not found...!");
+
+			const updatedLocation = await _db.Location.findByIdAndUpdate(id, data, { new: true });
+
+			pubsub.publish("locationUpdated", { locationUpdated: updatedLocation });
+
+			return updatedLocation;
 		}
-
-		const updated_location = (db.locations[location_index] = {
-			...db.locations[location_index],
-			...data,
-		});
-
-		pubsub.publish("locationUpdated", { locationUpdated: updated_location });
-
-		return updated_location;
 	},
-	deleteLocation: (_, { id }, { db, pubsub }) => {
-		const location = db.locations.findIndex((location) => location.id === Number(id));
+	deleteLocation: async (_, { id }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_location_exist = await _db.Location.findById(id);
 
-		if (location === -1) {
-			throw new Error("Location not found!");
+			if (!is_location_exist) throw new Error("Location not found...!");
+
+			const deletedLocation = await _db.Location.findByIdAndDelete(id);
+			const locationCount = await _db.Location.countDocuments();
+
+			pubsub.publish("locationDeleted", { locationDeleted: deletedLocation });
+			pubsub.publish("locationCount", { locationCount });
+
+			return deletedLocation;
 		}
-		const deleted_location = locations[location];
-		db.locations.splice(location, 1);
-
-		pubsub.publish("locationDeleted", { locationDeleted: deleted_location });
-		pubsub.publish("locationCount", { locationCount: db.locations.length });
-
-		return deleted_location;
 	},
-	deleteAllLocations: (_, __, { db, pubsub }) => {
-		const length = db.locations.length;
-		db.locations.splice(0, length);
-
-		pubsub.publish("locationCount", { locationCount: db.locations.length });
+	deleteAllLocations: async (_, __, { _db }) => {
+		const deletedLocations = await _db.Location.deleteMany();
 
 		return {
-			count: length,
+			count: deletedLocations.deletedCount,
 		};
 	},
-	createUser: (_, { data }, { db, pubsub }) => {
-		const user = {
-			id: v4(),
-			username: data.username,
-			email: data.email,
-		};
-		db.users.push(user);
+	createUser: async (_, { data }, { _db, pubsub }) => {
+		const newUser = new _db.User({ ...data });
+
+		const user = await newUser.save();
+		const userCount = await _db.User.countDocuments();
 
 		pubsub.publish("userCreated", { userCreated: user });
-		pubsub.publish("userCount", { userCount: db.users.length });
+		pubsub.publish("userCount", { userCount });
 
 		return user;
 	},
-	updateUser: (_, { id, data }, { db, pubsub }) => {
-		const user_index = db.users.findIndex((user) => user.id === Number(id));
+	updateUser: async (_, { id, data }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_user_exist = await _db.User.findById(id);
 
-		if (user_index === -1) {
-			throw new Error("User not found!");
+			if (!is_user_exist) throw new Error("User not found");
+
+			const updatedUser = await _db.User.findByIdAndUpdate(id, data, { new: true });
+
+			pubsub.publish("userUpdated", { userUpdated: updatedUser });
+			return updatedUser;
 		}
-
-		const updated_user = (db.users[user_index] = {
-			...db.users[user_index],
-			...data,
-		});
-
-		pubsub.publish("userUpdated", { userUpdated: updated_user });
-
-		return updated_user;
 	},
-	deleteUser: (_, { id }, { db, pubsub }) => {
-		const user = db.users.findIndex((user) => user.id === Number(id));
+	deleteUser: async (_, { id }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_user_exist = await _db.User.findById(id);
 
-		if (user === -1) {
-			throw new Error("User not found!");
+			if (!is_user_exist) throw new Error("User not found");
+
+			const deletedUser = await _db.User.findByIdAndDelete(id);
+			const userCount = await _db.User.countDocuments();
+			pubsub.publish("userCount", { userCount });
+			pubsub.publish("userDeleted", { userDeleted: deletedUser });
+			return deletedUser;
 		}
-		const deleted_user = db.users[user];
-		db.users.splice(user, 1);
-
-		pubsub.publish("userDeleted", { userDeleted: deleted_user });
-		pubsub.publish("userCount", { userCount: db.users.length });
-
-		return deleted_user;
 	},
-	deleteAllUsers: (_, __, { db, pubsub }) => {
-		const length = users.length;
-		db.users.splice(0, length);
-
-		pubsub.publish("userCount", { userCount: db.users.length });
+	deleteAllUsers: async (_, __, { _db }) => {
+		const deleteUsers = await _db.User.deleteMany();
 
 		return {
-			count: length,
+			count: deleteUsers.deletedCount,
 		};
 	},
-	createParticipant: (_, { data }, { db, pubsub }) => {
-		const participant = {
-			id: v4(),
-			user_id: data.user_id,
-			event_id: data.event_id,
-		};
-		db.participants.push(participant);
+	createParticipant: async (_, { data }, { _db, pubsub }) => {
+		const newParticipant = new _db.Participant({ ...data });
+
+		const participant = await newParticipant.save();
+		const participantCount = await _db.Participant.countDocuments();
 
 		pubsub.publish("participantCreated", { participantCreated: participant });
-		pubsub.publish("participantCount", { participantCount: db.participants.length });
+		pubsub.publish("participantCount", { participantCount });
 
 		return participant;
 	},
-	updateParticipant: (_, { id, data }, { db, pubsub }) => {
-		const participant_index = db.participants.findIndex((participant) => participant.id === Number(id));
+	updateParticipant: async (_, { id, data }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_participant_exist = await _db.Participant.findById(id);
 
-		if (participant_index === -1) {
-			throw new Error("Participant not found!");
+			if (!is_participant_exist) throw new Error("Participant not found...!");
+
+			const updatedParticipant = await _db.Participant.findByIdAndUpdate(id, data, { new: true });
+
+			pubsub.publish("participantUpdated", { participantUpdated: updatedParticipant });
+
+			return updatedParticipant;
 		}
-
-		const updated_participant = (db.participants[participant_index] = {
-			...db.participants[participant_index],
-			...data,
-		});
-
-		pubsub.publish("participantUpdated", { participantUpdated: updated_participant });
-
-		return updated_participant;
 	},
-	deleteParticipant: (_, { id }, { db, pubsub }) => {
-		const participant = db.participants.findIndex((participant) => participant.id === Number(id));
+	deleteParticipant: async (_, { id }, { _db, pubsub }) => {
+		if (mongoose.Types.ObjectId.isValid(id)) {
+			const is_participant_exist = await _db.Participant.findById(id);
 
-		if (participant === -1) {
-			throw new Error("Participant not found!");
+			if (!is_participant_exist) throw new Error("Participant not found...!");
+
+			const deletedParticipant = await _db.Participant.findByIdAndDelete(id);
+			const participantCount = await _db.User.countDocuments();
+			pubsub.publish("participantCount", { participantCount });
+			pubsub.publish("participantDeleted", { participantDeleted: deletedParticipant });
+			return deletedParticipant;
 		}
-		const deleted_participant = participants[participant];
-		db.participants.splice(participant, 1);
-
-		pubsub.publish("participantDeleted", { participantDeleted: deleted_participant });
-		pubsub.publish("participantCount", { participantCount: db.participants.length });
-
-		return deleted_participant;
 	},
-	deleteAllParticipants: (_, __, { db, pubsub }) => {
-		const length = db.participants.length;
-		db.participants.splice(0, length);
-
-		pubsub.publish("participantCount", { participantCount: db.participants.length });
+	deleteAllParticipants: async (_, __, { _db }) => {
+		const deletedParticipants = await _db.Participant.deleteMany();
 
 		return {
-			count: length,
+			count: deletedParticipants.deletedCount,
 		};
 	},
 };

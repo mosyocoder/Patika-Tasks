@@ -3,10 +3,10 @@ import { gql } from "@apollo/client";
 export const PARTICIPANTS_SUBSCRIPTION = gql`
 	subscription participantCreated($id: ID) {
 		participantCreated(event_id: $id) {
-			id
+			_id
 			user {
-				id
-				username
+				_id
+				fullname
 				email
 			}
 		}
@@ -16,29 +16,28 @@ export const PARTICIPANTS_SUBSCRIPTION = gql`
 export const GET_EVENT = gql`
 	query getEvent($id: ID!) {
 		event(id: $id) {
-			id
 			title
 			desc
 			date
 			from
 			to
 			user {
-				id
-				username
+				fullname
 				email
+			}
+			location {
+				name
+				desc
 			}
 			participants {
 				user {
-					username
+					fullname
+					image
 					email
+					age
+					gender
+					phone
 				}
-			}
-			location {
-				id
-				name
-				desc
-				lat
-				lng
 			}
 		}
 	}
