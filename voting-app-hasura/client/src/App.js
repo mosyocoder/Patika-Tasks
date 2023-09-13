@@ -7,19 +7,21 @@ import "./App.css";
 function App() {
 	const location = useLocation();
 
-	return (
+    const menuItems = [
+		{
+			key: "/",
+			label: <Link to={"/"}>Questions</Link>,
+		},
+		{
+			key: "/new",
+			label: <Link to={"/new"}>New Question</Link>,
+		},
+    ];
+
+    return (
 		<Row className="container">
 			<Col className="menu" span={24}>
-				<Menu mode="horizontal" selectedKeys={location.pathname}>
-					<Menu.Item key="/">
-						<span>Questions</span>
-						<Link to="/" />
-					</Menu.Item>
-					<Menu.Item key="/new">
-						<span>New Question</span>
-						<Link to="/new" />
-					</Menu.Item>
-				</Menu>
+				<Menu mode="horizontal" selectedKeys={location.pathname} items={menuItems} />
 			</Col>
 			<Col className="content">
 				<Routes>
@@ -28,7 +30,7 @@ function App() {
 				</Routes>
 			</Col>
 		</Row>
-	);
+    );
 }
 
 export default App;
