@@ -7,7 +7,7 @@ import "./App.css";
 function App() {
 	const location = useLocation();
 
-    const menuItems = [
+	const menuItems = [
 		{
 			key: "/",
 			label: <Link to={"/"}>Questions</Link>,
@@ -16,9 +16,9 @@ function App() {
 			key: "/new",
 			label: <Link to={"/new"}>New Question</Link>,
 		},
-    ];
+	];
 
-    return (
+	return (
 		<Row className="container">
 			<Col className="menu" span={24}>
 				<Menu mode="horizontal" selectedKeys={location.pathname} items={menuItems} />
@@ -30,7 +30,7 @@ function App() {
 				</Routes>
 			</Col>
 		</Row>
-    );
+	);
 }
 
 export default App;
