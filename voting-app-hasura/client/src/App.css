@@ -13,3 +13,26 @@
     width: 1200px;
     margin: 50px auto 0 auto;
 }
+
+.questionList > div > div > ul > li > a {
+    margin-left: 30px;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.questionList > div > div > ul > li > a:hover {
+    color: rgba(0, 0, 0, 0.95);
+}
+
+.voteButton{
+    margin-top: 10px;
+}
+
+.ant-radio-group{
+    font-size: 20px;
+}
+.votesDetail{
+    margin-left: 15px;
+}

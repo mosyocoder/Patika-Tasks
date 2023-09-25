@@ -1,14 +1,10 @@
 import { gql } from "@apollo/client";
 
-export const GET_QUESTIONS = gql`
+export const QUESTIONS_SUBSCRIPTION = gql`
 	subscription {
-		questions {
+		questions(order_by: { id: desc }) {
 			id
 			title
-			options {
-				id
-				title
-			}
 		}
 	}
 `;

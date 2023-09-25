@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { GET_QUESTIONS } from "./queries";
+import React from "react";
 import { useSubscription } from "@apollo/client";
+import { List } from "antd";
+
 import Loading from "../../components/Loading";
-import { Button, Collapse, Radio } from "antd";
+import { QUESTIONS_SUBSCRIPTION } from "./queries";
+import { Link } from "react-router-dom";
 
 function Questions() {
-	const [collapseId, setCollapseId] = useState();
-
-	const { loading, error, data } = useSubscription(GET_QUESTIONS);
+	const { loading, error, data } = useSubscription(QUESTIONS_SUBSCRIPTION);
 
 	if (loading) return <Loading />;
 
@@ -18,45 +18,16 @@ function Questions() {
 			</div>
 		);
 
-	const radioControl = (e) => {};
-
-	const collapseControl = (e) => {
-		setCollapseId(e);
-	};
-
-	const voteButtonControl = () => {
-		const div = document.getElementById(`voting-div-${collapseId}`);
-		div.innerHTML = "";
-	};
-
-	const collapseItems = [];
-	if (data) {
-		data.questions.map((item) => {
-			collapseItems.push({
-				key: item.id,
-				label: item.title,
-				showArrow: false,
-				children: (
-					<div id={`voting-div-${item.id}`}>
-						<Radio.Group onChange={radioControl} key={item.id} style={{ display: "flex", flexDirection: "column" }}>
-							{item.options.map((option) => (
-								<Radio key={option.id} value={option.id} style={{ marginBottom: "10px" }}>
-									{option.title}
-								</Radio>
-							))}
-						</Radio.Group>
-						<Button type="primary" onClick={voteButtonControl}>
-							Vote !
-						</Button>
-					</div>
-				),
-			});
-		});
-	}
-
 	return (
 		<div>
-			<Collapse accordion items={collapseItems} onChange={collapseControl} />
+			<List
+				className="questionList"
+				dataSource={data.questions}
+				renderItem={(item) => (
+					<List.Item>
+						<Link to={`/question/${item.id}`}>{item.title}</Link>
+					</List.Item>
+				)}></List>
 		</div>
 	);
 }

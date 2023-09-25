@@ -3,6 +3,7 @@ import Questions from "./pages/Questions";
 import { Menu, Row, Col } from "antd";
 import NewQuestion from "./pages/NewQuestion";
 import "./App.css";
+import Question from "./pages/Question";
 
 function App() {
 	const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Questions />} />
 					<Route path="/new" element={<NewQuestion />} />
+					<Route path="/question/:id" element={<Question />} />
 				</Routes>
 			</Col>
 		</Row>
