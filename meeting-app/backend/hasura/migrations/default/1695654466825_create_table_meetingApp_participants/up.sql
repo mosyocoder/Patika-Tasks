@@ -1,0 +1,1 @@
+CREATE TABLE "meetingApp"."participants" ("id" serial NOT NULL, "user_id" integer NOT NULL, "meeting_id" serial NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "meetingApp"."users"("id") ON UPDATE restrict ON DELETE restrict, FOREIGN KEY ("meeting_id") REFERENCES "meetingApp"."meetings"("id") ON UPDATE restrict ON DELETE restrict);
