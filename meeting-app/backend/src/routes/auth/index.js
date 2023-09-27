@@ -1,10 +1,11 @@
 import express from "express";
-import Boom, { badRequest } from "boom";
+import Boom from "boom";
 import bcrypt from "bcryptjs";
+import { signAccessToken } from "./helpers";
 
 import Hasura from "../../clients/hasura";
-import { registerSchema } from "./validations";
-import { INSERT_USER_MUTATION, IS_EXIST_USER } from "./queries";
+import { registerSchema, loginSchema } from "./validations";
+import { INSERT_USER_MUTATION, IS_EXIST_USER, LOGIN_QUERY } from "./queries";
 
 const router = express.Router();
 
@@ -31,16 +32,46 @@ router.post("/register", async (req, res, next) => {
 		const salt = await bcrypt.genSalt(10);
 		const hash = await bcrypt.hash(input.password, salt);
 
-		const user = await Hasura.request(INSERT_USER_MUTATION, {
+		const { insert_meetingApp_users_one: user } = await Hasura.request(INSERT_USER_MUTATION, {
 			input: {
 				...input,
 				password: hash,
 			},
 		});
 
-		res.json({ accessToken: "accessToken" });
+		const accessToken = await signAccessToken(user);
+
+		res.json({ accessToken });
 	} catch (err) {
 		return next(Boom.badRequest(err));
+	}
+});
+
+router.post("/login", async (req, res, next) => {
+	const input = req.body.input.data;
+	input.email = input.email.toLowerCase();
+
+	const { error } = loginSchema.validate(input);
+
+	if (error) return next(Boom.badRequest(error.details[0].message));
+
+	try {
+		const { users } = await Hasura.request(LOGIN_QUERY, {
+			email: input.email,
+		});
+
+		if (users.length === 0) throw Boom.unauthorized("Email or password is incorrect");
+
+		const user = users[0];
+
+		const isMatch = await bcrypt.compare(input.password, user.password);
+
+		if (!isMatch) throw Boom.unauthorized("Email or password is incorrect");
+
+		const accessToken = await signAccessToken(user);
+		return res.json({ accessToken });
+	} catch (err) {
+		return next(err);
 	}
 });
 

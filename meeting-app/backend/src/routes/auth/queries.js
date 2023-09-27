@@ -18,7 +18,24 @@ export const INSERT_USER_MUTATION = `
             object:$input
         ){
             id
-            name
+            email
+        }
+    }
+`;
+
+export const LOGIN_QUERY = `
+    query login($email:String!){
+        meetingApp_users(
+            where:{
+                email:{
+                    _eq: $email
+                },
+            },
+            limit:1
+        ){
+            id
+            email
+            password
         }
     }
 `;
