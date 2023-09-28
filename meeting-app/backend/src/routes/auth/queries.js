@@ -24,7 +24,7 @@ export const INSERT_USER_MUTATION = `
 `;
 
 export const LOGIN_QUERY = `
-    query login($email:String!){
+    query Users($email:String!){
         meetingApp_users(
             where:{
                 email:{

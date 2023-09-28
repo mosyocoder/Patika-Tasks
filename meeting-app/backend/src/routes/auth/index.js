@@ -1,7 +1,7 @@
 import express from "express";
 import Boom from "boom";
 import bcrypt from "bcryptjs";
-import { signAccessToken } from "./helpers";
+import { signAccessToken, verifyAccessToken } from "./helpers";
 
 import Hasura from "../../clients/hasura";
 import { registerSchema, loginSchema } from "./validations";
@@ -56,7 +56,7 @@ router.post("/login", async (req, res, next) => {
 	if (error) return next(Boom.badRequest(error.details[0].message));
 
 	try {
-		const { users } = await Hasura.request(LOGIN_QUERY, {
+		const { meetingApp_users: users } = await Hasura.request(LOGIN_QUERY, {
 			email: input.email,
 		});
 
@@ -73,6 +73,14 @@ router.post("/login", async (req, res, next) => {
 	} catch (err) {
 		return next(err);
 	}
+});
+
+router.post("/me", verifyAccessToken, (req, res, next) => {
+	const { aud } = req.payload;
+
+	return res.json({
+		user_id: aud,
+	});
 });
 
 export default router;
