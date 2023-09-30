@@ -35,7 +35,7 @@ custom_types:
           name: user
           remote_table:
             name: users
-            schema: meetingApp
+            schema: meetingapp
           source: default
           type: object
   scalars: []

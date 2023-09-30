@@ -1,6 +1,6 @@
 table:
   name: participants
-  schema: meetingApp
+  schema: meetingapp
 object_relationships:
   - name: meeting
     using:
@@ -16,5 +16,4 @@ select_permissions:
         - meeting_id
         - user_id
       filter: {}
-      allow_aggregations: true
     comment: ""

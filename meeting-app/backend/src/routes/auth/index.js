@@ -25,14 +25,14 @@ router.post("/register", async (req, res, next) => {
 			email: input.email,
 		});
 
-		if (isExistUser.meetingApp_users.length > 0) {
+		if (isExistUser.meetingapp_users.length > 0) {
 			throw Boom.conflict(`User already exist ${input.email}`);
 		}
 
 		const salt = await bcrypt.genSalt(10);
 		const hash = await bcrypt.hash(input.password, salt);
 
-		const { insert_meetingApp_users_one: user } = await Hasura.request(INSERT_USER_MUTATION, {
+		const { insert_meetingapp_users_one: user } = await Hasura.request(INSERT_USER_MUTATION, {
 			input: {
 				...input,
 				password: hash,
@@ -56,7 +56,7 @@ router.post("/login", async (req, res, next) => {
 	if (error) return next(Boom.badRequest(error.details[0].message));
 
 	try {
-		const { meetingApp_users: users } = await Hasura.request(LOGIN_QUERY, {
+		const { meetingapp_users: users } = await Hasura.request(LOGIN_QUERY, {
 			email: input.email,
 		});
 

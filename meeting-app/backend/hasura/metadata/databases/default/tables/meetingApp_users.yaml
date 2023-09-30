@@ -1,6 +1,6 @@
 table:
   name: users
-  schema: meetingApp
+  schema: meetingapp
 array_relationships:
   - name: meetings
     using:
@@ -8,7 +8,13 @@ array_relationships:
         column: user_id
         table:
           name: meetings
-          schema: meetingApp
+          schema: meetingapp
+computed_fields:
+  - name: full_name
+    definition:
+      function:
+        name: full_name
+        schema: meetingapp
 select_permissions:
   - role: user
     permission:
@@ -17,5 +23,7 @@ select_permissions:
         - id
         - name
         - surname
+      computed_fields:
+        - full_name
       filter: {}
     comment: ""

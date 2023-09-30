@@ -1,6 +1,6 @@
 table:
   name: meetings
-  schema: meetingApp
+  schema: meetingapp
 object_relationships:
   - name: user
     using:
@@ -12,7 +12,7 @@ array_relationships:
         column: meeting_id
         table:
           name: participants
-          schema: meetingApp
+          schema: meetingapp
 select_permissions:
   - role: user
     permission:
@@ -30,5 +30,15 @@ select_permissions:
           - participants:
               user_id:
                 _eq: X-Hasura-User-Id
-      allow_aggregations: true
     comment: ""
+event_triggers:
+  - name: created_meeting
+    definition:
+      enable_manual: false
+      insert:
+        columns: '*'
+    retry_conf:
+      interval_sec: 10
+      num_retries: 0
+      timeout_sec: 60
+    webhook: '{{ACTION_BASE_ENDPOINT}}/webhooks/created_meeting'

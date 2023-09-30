@@ -1,6 +1,6 @@
 export const IS_EXIST_USER = `
     query isExistsEmail($email: String!){
-        meetingApp_users(
+        meetingapp_users(
             where:{
                 email:{
                     _eq: $email
@@ -13,8 +13,8 @@ export const IS_EXIST_USER = `
 `;
 
 export const INSERT_USER_MUTATION = `
-    mutation insertUser($input:meetingApp_users_insert_input!){
-        insert_meetingApp_users_one(
+    mutation insertUser($input:meetingapp_users_insert_input!){
+        insert_meetingapp_users_one(
             object:$input
         ){
             id
@@ -25,7 +25,7 @@ export const INSERT_USER_MUTATION = `
 
 export const LOGIN_QUERY = `
     query Users($email:String!){
-        meetingApp_users(
+        meetingapp_users(
             where:{
                 email:{
                     _eq: $email
