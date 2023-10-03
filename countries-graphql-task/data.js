@@ -5,6 +5,8 @@ const countries = [
 		code: "FR",
 		continent_code: "EU",
 		emoji: "https://flagsapi.com/FR/flat/64.png",
+		capital: "Paris",
+		languages: [1],
 	},
 	{
 		id: 2,
@@ -12,6 +14,8 @@ const countries = [
 		code: "US",
 		continent_code: "NA",
 		emoji: "https://flagsapi.com/US/flat/64.png",
+		capital: "Washington, D.C.",
+		languages: [2],
 	},
 	{
 		id: 3,
@@ -19,6 +23,8 @@ const countries = [
 		code: "CA",
 		continent_code: "NA",
 		emoji: "https://flagsapi.com/CA/flat/64.png",
+		capital: "Ottawa",
+		languages: [2, 1],
 	},
 	{
 		id: 4,
@@ -26,6 +32,8 @@ const countries = [
 		code: "DE",
 		continent_code: "EU",
 		emoji: "https://flagsapi.com/DE/flat/64.png",
+		capital: "Berlin",
+		languages: [3],
 	},
 	{
 		id: 5,
@@ -33,6 +41,8 @@ const countries = [
 		code: "GB",
 		continent_code: "EU",
 		emoji: "https://flagsapi.com/GB/flat/64.png",
+		capital: "London",
+		languages: [2],
 	},
 	{
 		id: 6,
@@ -40,6 +50,8 @@ const countries = [
 		code: "AU",
 		continent_code: "OC",
 		emoji: "https://flagsapi.com/AU/flat/64.png",
+		capital: "Canberra",
+		languages: [2],
 	},
 	{
 		id: 7,
@@ -47,6 +59,8 @@ const countries = [
 		code: "JP",
 		continent_code: "AS",
 		emoji: "https://flagsapi.com/JP/flat/64.png",
+		capital: "Tokyo",
+		languages: [6],
 	},
 	{
 		id: 8,
@@ -54,6 +68,8 @@ const countries = [
 		code: "CN",
 		continent_code: "AS",
 		emoji: "https://flagsapi.com/CN/flat/64.png",
+		capital: "Beijing",
+		languages: [7],
 	},
 	{
 		id: 9,
@@ -61,6 +77,8 @@ const countries = [
 		code: "IN",
 		continent_code: "AS",
 		emoji: "https://flagsapi.com/IN/flat/64.png",
+		capital: "New Delhi",
+		languages: [8, 2],
 	},
 	{
 		id: 10,
@@ -68,6 +86,8 @@ const countries = [
 		code: "BR",
 		continent_code: "SA",
 		emoji: "https://flagsapi.com/BR/flat/64.png",
+		capital: "Brasília",
+		languages: [9],
 	},
 	{
 		id: 11,
@@ -75,6 +95,8 @@ const countries = [
 		code: "AR",
 		continent_code: "SA",
 		emoji: "https://flagsapi.com/AR/flat/64.png",
+		capital: "Buenos Aires",
+		languages: [4],
 	},
 	{
 		id: 12,
@@ -82,6 +104,8 @@ const countries = [
 		code: "ZA",
 		continent_code: "AF",
 		emoji: "https://flagsapi.com/ZA/flat/64.png",
+		capital: "Pretoria, Bloemfontein, and Cape Town",
+		languages: [11, 2],
 	},
 	{
 		id: 13,
@@ -89,6 +113,8 @@ const countries = [
 		code: "EG",
 		continent_code: "AF",
 		emoji: "https://flagsapi.com/EG/flat/64.png",
+		capital: "Cairo",
+		languages: [12],
 	},
 	{
 		id: 14,
@@ -96,6 +122,8 @@ const countries = [
 		code: "RU",
 		continent_code: "EU",
 		emoji: "https://flagsapi.com/RU/flat/64.png",
+		capital: "Moscow",
+		languages: [13],
 	},
 	{
 		id: 15,
@@ -103,6 +131,8 @@ const countries = [
 		code: "KR",
 		continent_code: "AS",
 		emoji: "https://flagsapi.com/KR/flat/64.png",
+		capital: "Seoul",
+		languages: [10],
 	},
 	{
 		id: 16,
@@ -110,6 +140,8 @@ const countries = [
 		code: "MX",
 		continent_code: "NA",
 		emoji: "https://flagsapi.com/MX/flat/64.png",
+		capital: "Mexico City",
+		languages: [4],
 	},
 	{
 		id: 17,
@@ -117,6 +149,8 @@ const countries = [
 		code: "IT",
 		continent_code: "EU",
 		emoji: "https://flagsapi.com/IT/flat/64.png",
+		capital: "Rome",
+		languages: [5],
 	},
 	{
 		id: 18,
@@ -124,6 +158,8 @@ const countries = [
 		code: "ES",
 		continent_code: "EU",
 		emoji: "https://flagsapi.com/ES/flat/64.png",
+		capital: "Madrid",
+		languages: [4],
 	},
 	{
 		id: 19,
@@ -131,6 +167,8 @@ const countries = [
 		code: "NL",
 		continent_code: "EU",
 		emoji: "https://flagsapi.com/NL/flat/64.png",
+		capital: "Amsterdam",
+		languages: [15],
 	},
 	{
 		id: 20,
@@ -138,7 +176,112 @@ const countries = [
 		code: "TR",
 		continent_code: "AS",
 		emoji: "https://flagsapi.com/TR/flat/64.png",
+		capital: "Ankara",
+		languages: [14],
 	},
 ];
 
-module.exports = countries;
+const languages = [
+	{
+		id: 1,
+		code: "fr",
+		native: "Français",
+		name: "French",
+	},
+	{
+		id: 2,
+		code: "en",
+		native: "English",
+		name: "English",
+	},
+	{
+		id: 3,
+		code: "de",
+		native: "Deutsch",
+		name: "German",
+	},
+	{
+		id: 4,
+		code: "es",
+		native: "Español",
+		name: "Spanish",
+	},
+	{
+		id: 5,
+		code: "it",
+		native: "Italiano",
+		name: "Italian",
+	},
+	{
+		id: 6,
+		code: "ja",
+		native: "日本語",
+		name: "Japanese",
+	},
+	{
+		id: 7,
+		code: "zh",
+		native: "中文",
+		name: "Chinese",
+	},
+	{
+		id: 8,
+		code: "hi",
+		native: "हिन्दी",
+		name: "Hindi",
+	},
+	{
+		id: 9,
+		code: "pt",
+		native: "Português",
+		name: "Portuguese",
+	},
+	{
+		id: 10,
+		code: "ko",
+		native: "한국어",
+		name: "Korean",
+	},
+	{
+		id: 11,
+		code: "af",
+		native: "Afrikaans",
+		name: "Afrikaans",
+	},
+	{
+		id: 12,
+		code: "ar",
+		native: "العربية",
+		name: "Arabic",
+	},
+	{
+		id: 13,
+		code: "ru",
+		native: "Русский",
+		name: "Russian",
+	},
+	{
+		id: 14,
+		code: "tr",
+		native: "Türkçe",
+		name: "Turkish",
+	},
+	{
+		id: 15,
+		code: "nl",
+		native: "Nederlands",
+		name: "Dutch",
+	},
+];
+
+const continents = [
+    {id: 1, name: "Africa", code: "AF"},
+    {id: 2, name: "Antarctica", code: "AN"},
+    {id: 3, name: "Asia", code: "AS"},
+    {id: 4, name: "Europe", code: "EU"},
+    {id: 5, name: "North America", code: "NA"}, 
+    {id: 6, name: "Oceania", code: "OC"},
+    {id: 7, name: "South America", code: "SA"},
+]
+
+module.exports = { countries, languages, continents };
