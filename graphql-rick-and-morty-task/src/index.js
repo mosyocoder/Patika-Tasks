@@ -5,10 +5,13 @@ import { ApolloProvider } from "@apollo/client";
 import "./index.css";
 import App from "./App";
 import { client } from "./apollo";
+import { FilterProvider } from "./Context/main";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
 	<ApolloProvider client={client}>
-		<App />
+		<FilterProvider>
+			<App />
+		</FilterProvider>
 	</ApolloProvider>,
 );
