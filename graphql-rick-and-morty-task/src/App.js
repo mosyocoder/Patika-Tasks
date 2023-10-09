@@ -63,7 +63,7 @@ function App() {
 					<div className="gender">
 						<h4>GENDER</h4>
 						{
-							<Radio.Group id="genderRadio" onChange={genderRadioChange}>
+							<Radio.Group value={gender} id="genderRadio" onChange={genderRadioChange}>
 								<Space direction="vertical">
 									{genderArray.map((gender, ix) => (
 										<Radio key={ix} value={gender}>
