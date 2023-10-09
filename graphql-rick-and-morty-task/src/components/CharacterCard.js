@@ -1,7 +1,6 @@
 import React from "react";
 
 function CharacterCard(props) {
-	console.log(props);
 	return (
 		<>
 			<div className="characters">

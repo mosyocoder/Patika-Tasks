@@ -10,7 +10,7 @@ export const FilterProvider = ({ children }) => {
 	const [filtered, setFiltered] = useState(true);
 	const [name, setName] = useState("");
 
-	const values = { page, setPage, gender, setGender, species, setSpecies, location, setLocation, filtered, setFiltered, name, setName };
+    const values = { page, setPage, gender, setGender, species, setSpecies, location, setLocation, filtered, setFiltered, name, setName };
 
 	return <FilterContext.Provider value={values}>{children}</FilterContext.Provider>;
 };

@@ -90,7 +90,9 @@ body{
     display: flex;
     flex-direction: column;
     min-width: 220px;
+    max-width: 220px;
     margin-bottom: 10px;
+    flex-wrap: wrap;
 }
 
 .card > img {
